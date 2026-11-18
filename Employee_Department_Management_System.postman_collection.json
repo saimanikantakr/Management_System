@@ -1,0 +1,790 @@
+{
+  "info": {
+    "_postman_id": "9d1b01cf-67e3-4638-b9a1-778848419a71",
+    "name": "Employee & Department Management System API",
+    "description": "Comprehensive Postman collection for testing the Employee & Department Management System REST API built with Spring Boot, Spring Data JPA, Hibernate, and MySQL.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Department Management",
+      "item": [
+        {
+          "name": "1. Create Department - Engineering",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Engineering\",\n  \"location\": \"Bangalore\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/departments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "departments"]
+            },
+            "description": "Creates a new department. Expected response: HTTP 201 CREATED."
+          },
+          "response": [
+            {
+              "name": "Successful Creation",
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"name\": \"Engineering\",\n  \"location\": \"Bangalore\",\n  \"employees\": []\n}"
+            }
+          ]
+        },
+        {
+          "name": "2. Create Department - Human Resources",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Human Resources\",\n  \"location\": \"Mumbai\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/departments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "departments"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Get All Departments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/departments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "departments"]
+            },
+            "description": "Retrieves all departments. Expected response: HTTP 200 OK."
+          },
+          "response": []
+        },
+        {
+          "name": "4. Get Department By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/departments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "departments", "1"]
+            },
+            "description": "Retrieves a department by ID along with its associated employees."
+          },
+          "response": []
+        },
+        {
+          "name": "5. Update Department",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Core Platform Engineering\",\n  \"location\": \"Hyderabad\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/departments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "departments", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "6. Assign Employee to Department (Path Variable)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/departments/1/employees/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "departments", "1", "employees", "1"]
+            },
+            "description": "Assigns employee ID 1 to department ID 1. Expected response: HTTP 200 OK."
+          },
+          "response": []
+        },
+        {
+          "name": "7. Assign Employee to Department (Request Body)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employeeId\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/departments/1/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "departments", "1", "employees"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "8. Get Employees By Department",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/departments/1/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "departments", "1", "employees"]
+            },
+            "description": "Retrieves all employees belonging to department ID 1."
+          },
+          "response": []
+        },
+        {
+          "name": "9. Delete Department",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/departments/2",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "departments", "2"]
+            },
+            "description": "Deletes department by ID. Expected response: HTTP 204 NO CONTENT."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Employee CRUD & Repository Queries",
+      "item": [
+        {
+          "name": "1. Create Employee 1 - Rahul Kumar",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rahul Kumar\",\n  \"email\": \"rahul@gmail.com\",\n  \"salary\": 45000,\n  \"departmentId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            },
+            "description": "Creates Rahul Kumar. Expected response: HTTP 201 CREATED."
+          },
+          "response": [
+            {
+              "name": "Created Employee",
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"name\": \"Rahul Kumar\",\n  \"email\": \"rahul@gmail.com\",\n  \"salary\": 45000.0,\n  \"departmentId\": 1,\n  \"departmentName\": \"Engineering\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "2. Create Employee 2 - Priya Sharma",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Priya Sharma\",\n  \"email\": \"priya@gmail.com\",\n  \"salary\": 85000,\n  \"departmentId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Create Employee 3 - Amit Patel",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Amit Patel\",\n  \"email\": \"amit@gmail.com\",\n  \"salary\": 62000,\n  \"departmentId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. Get All Employees",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            },
+            "description": "Returns all employees with department info. Expected response: HTTP 200 OK."
+          },
+          "response": []
+        },
+        {
+          "name": "5. Get Employee By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "1"]
+            },
+            "description": "Returns employee by ID. Expected response: HTTP 200 OK."
+          },
+          "response": []
+        },
+        {
+          "name": "6. Update Employee",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rahul Kumar (Senior)\",\n  \"email\": \"rahul.kumar@gmail.com\",\n  \"salary\": 55000,\n  \"departmentId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "1"]
+            },
+            "description": "Updates employee details. Expected response: HTTP 200 OK."
+          },
+          "response": []
+        },
+        {
+          "name": "7. Pagination & Sorting - Page 0 Size 2 Sort by Name ASC",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/paginated?page=0&size=2&sortBy=name&direction=asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "paginated"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "2"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "name"
+                },
+                {
+                  "key": "direction",
+                  "value": "asc"
+                }
+              ]
+            },
+            "description": "Retrieves page 0 with size 2 sorted by name ascending. Contains page metadata."
+          },
+          "response": [
+            {
+              "name": "Paginated Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"currentPage\": 0,\n  \"pageSize\": 2,\n  \"totalElements\": 3,\n  \"totalPages\": 2,\n  \"last\": false,\n  \"content\": [\n    {\n      \"id\": 3,\n      \"name\": \"Amit Patel\",\n      \"email\": \"amit@gmail.com\",\n      \"salary\": 62000.0,\n      \"departmentId\": 1,\n      \"departmentName\": \"Engineering\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Priya Sharma\",\n      \"email\": \"priya@gmail.com\",\n      \"salary\": 85000.0,\n      \"departmentId\": 1,\n      \"departmentName\": \"Engineering\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "8. Derived Query - Search by Name Containing (Case-Insensitive)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/search/name?keyword=kumar",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "search", "name"],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "kumar"
+                }
+              ]
+            },
+            "description": "Uses derived query findByNameContainingIgnoreCase."
+          },
+          "response": []
+        },
+        {
+          "name": "9. Derived Query - Search Salary Greater Than",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/search/salary?min=50000",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "search", "salary"],
+              "query": [
+                {
+                  "key": "min",
+                  "value": "50000"
+                }
+              ]
+            },
+            "description": "Uses derived query findBySalaryGreaterThan."
+          },
+          "response": []
+        },
+        {
+          "name": "10. JPQL Query - Search Salary Greater Than (Sorted Descending)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/search/salary/sorted?min=50000",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "search", "salary", "sorted"],
+              "query": [
+                {
+                  "key": "min",
+                  "value": "50000"
+                }
+              ]
+            },
+            "description": "Uses custom JPQL @Query to retrieve employees with salary > min sorted in DESC order."
+          },
+          "response": []
+        },
+        {
+          "name": "11. Derived Query - Search Salary Range Between Min and Max",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/search/salary-range?min=40000&max=70000",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "search", "salary-range"],
+              "query": [
+                {
+                  "key": "min",
+                  "value": "40000"
+                },
+                {
+                  "key": "max",
+                  "value": "70000"
+                }
+              ]
+            },
+            "description": "Uses derived query findBySalaryBetween."
+          },
+          "response": []
+        },
+        {
+          "name": "12. Derived Query - Get Employees By Department ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/department/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "department", "1"]
+            },
+            "description": "Uses derived query findByDepartmentId."
+          },
+          "response": []
+        },
+        {
+          "name": "13. Native SQL Query - Get Employees By Department ID Native",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/department/1/native",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "department", "1", "native"]
+            },
+            "description": "Uses native SQL @Query(nativeQuery = true) findEmployeesByDepartmentIdNative."
+          },
+          "response": []
+        },
+        {
+          "name": "14. Delete Employee",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/3",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "3"]
+            },
+            "description": "Deletes employee by ID. Expected response: HTTP 204 NO CONTENT."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Negative Test Cases (Validation & Errors)",
+      "item": [
+        {
+          "name": "Negative - Employee ID Does Not Exist (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "999"]
+            },
+            "description": "Attempt to get nonexistent employee. Expected response: HTTP 404 NOT FOUND."
+          },
+          "response": [
+            {
+              "name": "Employee Not Found Response",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"timestamp\": \"2026-11-05T12:00:00\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Employee not found with id: '999'\",\n  \"path\": \"/api/employees/999\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Negative - Department ID Does Not Exist (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/departments/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "departments", "999"]
+            },
+            "description": "Attempt to get nonexistent department. Expected response: HTTP 404 NOT FOUND."
+          },
+          "response": [
+            {
+              "name": "Department Not Found Response",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"timestamp\": \"2026-11-05T12:00:00\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Department not found with id: '999'\",\n  \"path\": \"/api/departments/999\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Negative - Create Employee With Duplicate Email (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Another Rahul\",\n  \"email\": \"rahul@gmail.com\",\n  \"salary\": 50000,\n  \"departmentId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            },
+            "description": "Attempt to register employee with already existing email. Expected response: HTTP 409 CONFLICT."
+          },
+          "response": [
+            {
+              "name": "Duplicate Email Response",
+              "status": "Conflict",
+              "code": 409,
+              "body": "{\n  \"timestamp\": \"2026-11-05T12:00:00\",\n  \"status\": 409,\n  \"error\": \"Conflict\",\n  \"message\": \"Employee already exists with email: 'rahul@gmail.com'\",\n  \"path\": \"/api/employees\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Negative - Invalid Email Format (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Neha Verma\",\n  \"email\": \"invalid-email-address\",\n  \"salary\": 50000,\n  \"departmentId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            },
+            "description": "Attempt with invalid email format. Expected response: HTTP 400 BAD REQUEST."
+          },
+          "response": [
+            {
+              "name": "Validation Error Response",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"timestamp\": \"2026-11-05T12:00:00\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Email must be valid\",\n  \"path\": \"/api/employees\",\n  \"validationErrors\": {\n    \"email\": \"Email must be valid\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Negative - Blank Employee Name (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"   \",\n  \"email\": \"neha@gmail.com\",\n  \"salary\": 50000,\n  \"departmentId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            },
+            "description": "Attempt with blank employee name. Expected response: HTTP 400 BAD REQUEST."
+          },
+          "response": [
+            {
+              "name": "Blank Name Response",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"timestamp\": \"2026-11-05T12:00:00\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Employee name must not be blank\",\n  \"path\": \"/api/employees\",\n  \"validationErrors\": {\n    \"name\": \"Employee name must not be blank\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Negative - Negative Salary (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Vikas Singh\",\n  \"email\": \"vikas@gmail.com\",\n  \"salary\": -2000,\n  \"departmentId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            },
+            "description": "Attempt with negative salary. Expected response: HTTP 400 BAD REQUEST."
+          },
+          "response": [
+            {
+              "name": "Negative Salary Response",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"timestamp\": \"2026-11-05T12:00:00\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Salary must be greater than zero\",\n  \"path\": \"/api/employees\",\n  \"validationErrors\": {\n    \"salary\": \"Salary must be greater than zero\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Negative - Create Employee With Nonexistent Department (404)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kavita Rao\",\n  \"email\": \"kavita@gmail.com\",\n  \"salary\": 52000,\n  \"departmentId\": 999\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            },
+            "description": "Attempt to create employee with invalid departmentId. Expected response: HTTP 404 NOT FOUND."
+          },
+          "response": [
+            {
+              "name": "Nonexistent Department Response",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"timestamp\": \"2026-11-05T12:00:00\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Department not found with id: '999'\",\n  \"path\": \"/api/employees\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Negative - Invalid Pagination Values (Negative Page) (400)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/paginated?page=-1&size=5",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "paginated"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "-1"
+                },
+                {
+                  "key": "size",
+                  "value": "5"
+                }
+              ]
+            },
+            "description": "Attempt with page < 0. Expected response: HTTP 400 BAD REQUEST."
+          },
+          "response": [
+            {
+              "name": "Invalid Page Response",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"timestamp\": \"2026-11-05T12:00:00\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Page index must not be less than zero\",\n  \"path\": \"/api/employees/paginated\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Negative - Invalid Sort Property (400)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/paginated?page=0&size=5&sortBy=maliciousColumn",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "paginated"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "5"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "maliciousColumn"
+                }
+              ]
+            },
+            "description": "Attempt sorting by non-whitelisted property. Expected response: HTTP 400 BAD REQUEST."
+          },
+          "response": [
+            {
+              "name": "Invalid Sort Property Response",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"timestamp\": \"2026-11-05T12:00:00\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid sort property: 'maliciousColumn'. Allowed values: [id, name, email, salary]\",\n  \"path\": \"/api/employees/paginated\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Negative - Invalid Salary Range (Min > Max) (400)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/search/salary-range?min=80000&max=50000",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "search", "salary-range"],
+              "query": [
+                {
+                  "key": "min",
+                  "value": "80000"
+                },
+                {
+                  "key": "max",
+                  "value": "50000"
+                }
+              ]
+            },
+            "description": "Attempt with min > max. Expected response: HTTP 400 BAD REQUEST."
+          },
+          "response": [
+            {
+              "name": "Invalid Salary Range Response",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"timestamp\": \"2026-11-05T12:00:00\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Minimum salary (80000.0) cannot exceed maximum salary (50000.0)\",\n  \"path\": \"/api/employees/search/salary-range\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
